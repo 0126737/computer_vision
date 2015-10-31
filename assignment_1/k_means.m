@@ -18,7 +18,7 @@ min_ratio = 1.5;
 % choose another centroid.
 centroids = zeros(K,size(data,2));
 % choose first point randomly
-centroids(1,:) = data(round(rand * (size(data,1)-1)+1),:);
+centroids(1,:) = data(randi(size(data,1),1,1),:);
 i=2;
 while i <= K
     centroids(i,:) = data(round(rand * (size(data,1)-1)+1),:);

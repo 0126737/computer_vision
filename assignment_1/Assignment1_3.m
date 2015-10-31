@@ -1,4 +1,5 @@
 clear
+% Computer Vision Assignment 1.3
 
 % Q: how to choose threshold
 % Q: set scale to scale/2 for half sized image?

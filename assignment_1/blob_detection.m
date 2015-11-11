@@ -32,7 +32,7 @@ function [] = blob_detection( orig, k, scale, levels, threshold )
         img = double(imresize(orig,0.5));
     end
     
-    scale = scale * 0.5;
+    scale = scale;
     scale_space = create_scale_space(img, k, scale, levels);
     [x,y,r] = find_maxima(scale_space, k, scale, threshold);
     figure;

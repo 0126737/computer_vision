@@ -5,7 +5,7 @@ function [ k_data, centroids ] = k_means( data, K )
 % WARNING K must not be bigger than the number of colors in the image
 % If K is bigger, the algorithm will not terminate!
 
-min_ratio = 1.5;
+min_ratio = 1.00001;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 1. choose centroids

@@ -14,9 +14,10 @@ str_img = {'simple.PNG','future.jpg','mm.jpg'};
 K = 3;
 for i=1:size(str_img,2)
     img = imread(char(str_img(i)));
-    figure;
+    figure('Name',char(str_img(i)),'NumberTitle','off');
+    subplot(1, 2, 1);
     imshow(k_means_3D(img,K));
-    figure;
+    subplot(1, 2, 2);
     imshow(k_means_5D(img,K));
 end
 
@@ -24,10 +25,11 @@ end
 % Show 3D and 5D k-means for mm.jpg and various values for k
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 img = imread('mm.jpg');
-K = [3,5,7,10,15,20];
+K = [5,10,15,20];
 for i = K
-    figure;
+    figure('Name','mm.jpg','NumberTitle','off');
+    subplot(1, 2, 1);
     imshow(k_means_3D(img,i));
-    figure;
+    subplot(1, 2, 2);
     imshow(k_means_5D(img,i));
 end

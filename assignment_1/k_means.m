@@ -1,4 +1,4 @@
-function [ k_data, centroids ] = k_means( data, K )
+function [ k_data, centroids ] = k_means( data, K, centroids )
 %K_MEANS Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -11,19 +11,18 @@ min_ratio = 1.00001;
 % 1. choose centroids
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% TODO: Select centroids random + distance (k-means++ algorithm -- Arthur
-% and Vassilvitskii, 2007)
-
-% Choose k centroids randomly, if a centroid is the same as a chosen one,
-% choose another centroid.
-centroids = zeros(K,size(data,2));
-% choose first point randomly
-centroids(1,:) = data(randi(size(data,1),1,1),:);
-i=2;
-while i <= K
-    centroids(i,:) = data(round(rand * (size(data,1)-1)+1),:);
-    if( max(sum(bsxfun(@eq,centroids(1:i-1,:),centroids(i,:)),2)) < size(data,2) )
-        i = i + 1;
+if nargin < 3
+    % Choose k centroids randomly, if a centroid is the same as a chosen one,
+    % choose another centroid.
+    centroids = zeros(K,size(data,2));
+    % choose first point randomly
+    centroids(1,:) = data(randi(size(data,1),1,1),:);
+    i=2;
+    while i <= K
+        centroids(i,:) = data(round(rand * (size(data,1)-1)+1),:);
+        if( max(sum(bsxfun(@eq,centroids(1:i-1,:),centroids(i,:)),2)) < size(data,2) )
+            i = i + 1;
+        end
     end
 end
 

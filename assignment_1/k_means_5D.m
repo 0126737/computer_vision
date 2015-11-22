@@ -1,4 +1,4 @@
-function [ k_colored_image ] = k_means_5D( img, K )
+function [ k_colored_image ] = k_means_5D( img, K, centroids )
 
     data = double(reshape(img,size(img,1)*size(img,2),3));
     
@@ -22,7 +22,11 @@ function [ k_colored_image ] = k_means_5D( img, K )
 
     data = [data, x, y];
 
-    temp_img = k_means(data, K);
+    if nargin < 3
+        temp_img = k_means(data, K);
+    else
+        temp_img = k_means(data, K, centroids);
+    end
     
     % De-normalize colors
     temp_img = temp_img .* 255;

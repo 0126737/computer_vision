@@ -1,5 +1,6 @@
 % Assignment 4
 %
+% Q: Absolute difference between 2 images?
 % Q: Warnings when executing cp2tform?
 % Q: Ignore all errors when executing cp2tform?
 % Q: panorma image without blending (black borders)?
@@ -7,7 +8,10 @@
 % TODO: Repeat B with img2 scaled and rotated
 
 clear
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A. SIFT Interest Point Detection
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 img = im2double(imread('campus1.jpg'));
 gray_img = single(rgb2gray(img));
 frame = vl_sift(gray_img);
@@ -16,7 +20,10 @@ figure;
 h = imshow(img); 
 vl_plotframe(frame);
 
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % B. Interest Point Matching and Image Registration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 img1 = im2double(imread('campus1.jpg'));
 gray_img1 = single(rgb2gray(img1));
 img2 = im2double(imread('campus2.jpg'));
@@ -33,17 +40,38 @@ match_plot(img1,img2,points_a,points_b);
 match_plot(img1,img2,points_a(idx,:), points_b(idx,:));
 
 % Step 5 - transform first image to the second image (Image Registration)
-timg = imtransform(img1, homography, 'XData', [1 size(img2,2)], 'YData', [1 size(img2,1)], 'XYScale', [1 1]);
+trans_img = imtransform(img1, homography, ...
+                        'XData', [1 size(img2,2)], ...
+                        'YData', [1 size(img2,1)], ...
+                        'XYScale', [1 1]);
 
 figure;
-imshow(timg);
+subplot(1,2,1);
+imshow(trans_img);
+subplot(1,2,2);
+imshow(img2);
 
+% Show absolute difference
+diff_img = imabsdiff(trans_img,img2);
+figure;
+imshow(diff_img);
+
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % C. Image Stitching
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%{
 imgs = cat(4, im2double(imread('campus1.jpg')), ...
               im2double(imread('campus2.jpg')), ...
               im2double(imread('campus3.jpg')), ...
               im2double(imread('campus4.jpg')), ...
               im2double(imread('campus5.jpg')));
+%}
+imgs = cat(4, im2double(imread('officeview1.jpg')), ...
+              im2double(imread('officeview2.jpg')), ...
+              im2double(imread('officeview3.jpg')), ...
+              im2double(imread('officeview4.jpg')), ...
+              im2double(imread('officeview5.jpg')));
 
 ref_img = round(size(imgs,4)/2);
 num_imgs = size(imgs,4);
@@ -51,12 +79,14 @@ num_imgs = size(imgs,4);
 % Step 1 - Create homographies
 H = cell(1,num_imgs);
 for i = 1:ref_img-1
-    [points_a, points_b] = matching(single(rgb2gray(imgs(:,:,:,i))), single(rgb2gray(imgs(:,:,:,i+1))));
+    [points_a, points_b] = matching(single(rgb2gray(imgs(:,:,:,i))), ...
+                                    single(rgb2gray(imgs(:,:,:,i+1))));
     H{1,i} = ransac(points_a,points_b, 1000, 5);
 end
 H{1,ref_img} = maketform('projective',eye(3));
 for i = ref_img+1:num_imgs
-    [points_a, points_b] = matching(single(rgb2gray(imgs(:,:,:,i-1))), single(rgb2gray(imgs(:,:,:,i))));
+    [points_a, points_b] = matching(single(rgb2gray(imgs(:,:,:,i-1))), ...
+                                    single(rgb2gray(imgs(:,:,:,i))));
     H{1,i} = ransac(points_a,points_b, 1000, 5);
 end
 
@@ -91,7 +121,7 @@ ydata = [min(corners(:,2)) max(corners(:,2))];
 % Step 4 - Transform images
 timg = cell(1,num_imgs);
 for i=1:num_imgs
-   timg{i} = imtransform(imgs(:,:,:,i), H{i}, 'XData', xdata, 'YData', ydata);
+timg{i} = imtransform(imgs(:,:,:,i), H{i}, 'XData', xdata, 'YData', ydata);
 end
 
 % Create overlap map

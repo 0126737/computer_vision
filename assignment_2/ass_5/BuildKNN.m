@@ -15,8 +15,8 @@ num_images = 0;
 
 % calculate number of images
 for i=1:num_categories
-    D = dir([folder,img_folders(i).name]);
-    num_images = num_images + length(D(not([D.isdir])));
+    D = dir([folder,img_folders(i).name,'/*.jpg']);
+    num_images = num_images + length(D);
 end
 
 training = zeros(num_images, size(C,2));
@@ -24,8 +24,7 @@ group = zeros(1,num_images);
 index = 1;
 
 for j=1:num_categories
-    files = dir([folder,img_folders(j).name]);
-    files = files(not([files.isdir]));
+    files = dir([folder,img_folders(j).name,'/*.jpg']);
 
     % iterate through image folder
     for i=1:length(files)

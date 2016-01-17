@@ -14,8 +14,7 @@ num_categories = length(img_folders([img_folders.isdir]));
 conf_matrix = zeros(num_categories, num_categories);
 
 for j=1:num_categories
-    files = dir([folder,img_folders(j).name]);
-    files = files(not([files.isdir]));
+    files = dir([folder,img_folders(j).name,'/*.jpg']);
 
     % iterate through image folder
     for i=1:length(files)

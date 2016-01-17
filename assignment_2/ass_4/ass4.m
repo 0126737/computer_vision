@@ -57,6 +57,9 @@ imshow(diff_img);
 
 %%
 % Repeat B with img2 scaled and rotated
+img1 = im2double(imread('campus1.jpg'));
+gray_img1 = single(rgb2gray(img1));
+img2 = im2double(imread('campus2.jpg'));
 img2 = imresize(img2,2);
 img2 = imrotate(img2,30);
 gray_img2 = single(rgb2gray(img2));

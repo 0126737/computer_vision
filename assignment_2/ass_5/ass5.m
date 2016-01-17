@@ -2,6 +2,9 @@
 
 % Q: How to normalize histograms?
 % Q: Getting 55% -- 60% correct classifications - ok?
+%
+% TODO: Make pictures of forest and test min 3 categories with own photos
+% (kitchen, living room, forest)
 
 folder = 'train';
 num_clusters = 50;

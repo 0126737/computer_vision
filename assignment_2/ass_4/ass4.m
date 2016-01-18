@@ -1,11 +1,10 @@
 % Assignment 4
 
-
-clear
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A. SIFT Interest Point Detection
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear;
 img = im2double(imread('campus1.jpg'));
 gray_img = single(rgb2gray(img));
 frame = vl_sift(gray_img);
@@ -18,6 +17,7 @@ vl_plotframe(frame);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % B. Interest Point Matching and Image Registration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear;
 img1 = im2double(imread('campus1.jpg'));
 gray_img1 = single(rgb2gray(img1));
 img2 = im2double(imread('campus2.jpg'));
@@ -37,7 +37,7 @@ match_plot(img1,img2,points_a(idx,:), points_b(idx,:));
 trans_img = imtransform(img1, homography, ...
                         'XData', [1 size(img2,2)], ...
                         'YData', [1 size(img2,1)], ...
-                        'XYScale', [1 1]);
+                        'XYScale', 1);
 
 figure;
 subplot(1,2,1);
@@ -65,6 +65,7 @@ match_plot(img1,img2,points_a,points_b);
 
 % Step 3+4 - RANSAC
 [homography, idx] = ransac(points_a,points_b, 1000, 5);
+match_plot(img1,img2,points_a(idx,:), points_b(idx,:));
 
 % Step 5 - transform first image to the second image (Image Registration)
 trans_img = imtransform(img1, homography, ...
@@ -95,10 +96,17 @@ imgs = cat(4, im2double(imread('campus1.jpg')), ...
 
 [timg, H, xdata, ydata] = create_panorama(imgs);
 
-% Show panorama image (max of image colors)
+% Show first image set without feathering
+map = create_overlap_map(timg);
+
+% Show panorama image without blending
 canvas = zeros(size(timg{1}));
 for i = 1:size(timg,2)
-   canvas = max(canvas, timg{i}); 
+   if bitget(i,1) % odd
+       canvas = canvas + timg{i};
+   else % even
+       canvas(not(map)) = canvas(not(map)) + timg{i}(not(map));
+   end
 end
 figure;
 imshow(canvas);

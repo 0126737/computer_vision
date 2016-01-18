@@ -15,6 +15,9 @@ max_inliers_idx = zeros(1, size(points1,1));
 
 i = 1;
 
+s1 = warning('error', 'images:maketform:conditionNumberofAIsHigh');
+s2 = warning('error', 'MATLAB:nearlySingularMatrix');
+
 while i <= N
     % Choose 4 random matches
     rnd_points_idx = randsample(1:size(points1,1), 4);

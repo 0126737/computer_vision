@@ -26,12 +26,12 @@ disp(['Classified ', num2str(trace(conf_matrix)), ' of ', ...
 % Classify own images
 % pictures of kitchen, living room and office
 
-conv = ClassifyOwnImages('test_own/kitchen', C, training, group);
+conf = ClassifyOwnImages('test_own/kitchen', C, training, group);
 disp('Kitchen:');
 disp(conf);
-conv = ClassifyOwnImages('test_own/livingroom', C, training, group);
+conf = ClassifyOwnImages('test_own/livingroom', C, training, group);
 disp('Living room:');
 disp(conf);
-conv = ClassifyOwnImages('test_own/office', C, training, group);
+conf = ClassifyOwnImages('test_own/office', C, training, group);
 disp('Office:');
 disp(conf);

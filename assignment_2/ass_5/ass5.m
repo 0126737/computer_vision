@@ -1,8 +1,5 @@
 % Assignment 5
 
-% Q: How to normalize histograms?
-% Q: Getting 55% -- 60% correct classifications - ok?
-%
 % TODO: Make pictures of forest and test min 3 categories with own photos
 % (kitchen, living room, forest)
 
@@ -24,3 +21,17 @@ disp(conf_matrix);
 disp(['Classified ', num2str(trace(conf_matrix)), ' of ', ...
       num2str(sum(sum(conf_matrix))), ' images correctly', ...
       ' (', num2str(trace(conf_matrix) / sum(sum(conf_matrix))*100), '%).'])
+  
+%%  
+% Classify own images
+% pictures of kitchen, living room and office
+
+conv = ClassifyOwnImages('test_own/kitchen', C, training, group);
+disp('Kitchen:');
+disp(conf);
+conv = ClassifyOwnImages('test_own/livingroom', C, training, group);
+disp('Living room:');
+disp(conf);
+conv = ClassifyOwnImages('test_own/office', C, training, group);
+disp('Office:');
+disp(conf);

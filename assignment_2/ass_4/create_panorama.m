@@ -48,7 +48,9 @@ ydata = [min(corners(:,2)) max(corners(:,2))];
 % Step 4 - Transform images
 timg = cell(1,num_imgs);
 for i=1:num_imgs
-    timg{i} = imtransform(imgs(:,:,:,i), H{i}, 'XData', xdata, 'YData', ydata);
+    timg{i} = imtransform(imgs(:,:,:,i), H{i}, 'XData', xdata, 'YData', ydata, 'XYScale', 1);
+    % If OUT OF MEMORY ERROR use the following line, instead of above
+    %Alpha{i} = imtransform(Alpha{i}, H{i}, 'XData', xdata, 'YData', ydata);
 end
 
 end

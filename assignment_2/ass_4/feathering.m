@@ -19,7 +19,9 @@ for i=1:size(timg,2)
     temp(:,1) = 1; temp(:,w) = 1; temp(h,:) = 1; temp(1,:) = 1;
     Alpha{i} = bwdist(temp);
     Alpha{i} = Alpha{i} / max(max(Alpha{i}));
-    Alpha{i} = imtransform(Alpha{i}, H{i}, 'XData', xdata, 'YData', ydata);
+    Alpha{i} = imtransform(Alpha{i}, H{i}, 'XData', xdata, 'YData', ydata, 'XYScale', 1);
+    % If OUT OF MEMORY ERROR use the following line, instead of above
+    %Alpha{i} = imtransform(Alpha{i}, H{i}, 'XData', xdata, 'YData', ydata);
 end
 
 % Calculate alpha weighted sum of colors
